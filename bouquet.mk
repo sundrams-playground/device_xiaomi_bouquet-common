@@ -169,6 +169,14 @@ PRODUCT_COPY_FILES += \
 # DebugFS
 PRODUCT_SET_DEBUGFS_RESTRICTIONS := true
 
+# DeviceSettings
+PRODUCT_PACKAGES += \
+   DeviceSettings
+
+# DeviceDoze
+PRODUCT_PACKAGES += \
+    DeviceDoze
+
 # Display
 PRODUCT_PACKAGES += \
     android.hardware.graphics.allocator@2.0-impl:64 \
@@ -298,6 +306,7 @@ PRODUCT_PACKAGES += \
     init.recovery.qcom.rc \
     init.target.rc \
     init.uclamp.rc \
+    init.xiaomi_parts.rc \
     ueventd.qcom.rc
 
 # IPACM
