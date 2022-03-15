@@ -214,6 +214,10 @@ PRODUCT_PACKAGES += \
     android.hardware.drm@1.3.vendor \
     libcrypto_shim.vendor
 
+# Folio
+PRODUCT_PACKAGES += \
+    folio_daemon
+
 # Fingerprint
 PRODUCT_PACKAGES += \
     android.hardware.biometrics.fingerprint@2.3-service.xiaomi
