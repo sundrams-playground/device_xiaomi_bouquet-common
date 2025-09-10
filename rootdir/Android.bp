@@ -5,6 +5,13 @@
 //
 
 // Init scripts
+prebuilt_etc {
+    name: "init.uclamp.rc",
+    src: "etc/init.uclamp.rc",
+    sub_dir: "init",
+    vendor: true,
+}
+
 sh_binary {
     name: "init.class_main.sh",
     src: "bin/init.class_main.sh",
