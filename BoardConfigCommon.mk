@@ -11,7 +11,6 @@ TARGET_BOOTLOADER_BOARD_NAME := sdm660
 TARGET_NO_BOOTLOADER := true
 # Platform
 BOARD_VENDOR := xiaomi
-TARGET_BOARD_PLATFORM := sdm660
 OVERRIDE_QCOM_HARDWARE_VARIANT := sdm660
 # Architecture
 TARGET_ARCH := arm64
@@ -85,7 +84,7 @@ DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE := \
     hardware/qcom-caf/common/vendor_framework_compatibility_matrix.xml \
     hardware/qcom-caf/common/vendor_framework_compatibility_matrix_legacy.xml \
     hardware/xiaomi/vintf/xiaomi_framework_compatibility_matrix.xml \
-    vendor/lineage/config/device_framework_matrix.xml
+    vendor/yaap/config/device_framework_matrix.xml
 # Init
 TARGET_INIT_VENDOR_LIB := //$(COMMON_PATH):libinit_sdm660
 TARGET_RECOVERY_DEVICE_MODULES := libinit_sdm660
@@ -119,7 +118,7 @@ BOARD_SUPER_PARTITION_VENDOR_DEVICE_SIZE := 2147483648
 BOARD_SUPER_PARTITION_CUST_DEVICE_SIZE := 872415232
 TARGET_FS_CONFIG_GEN := $(COMMON_PATH)/config.fs
 # Reserve partition space
-include vendor/lineage/config/BoardConfigReservedSize.mk
+include vendor/yaap/config/BoardConfigReservedSize.mk
 # Power
 TARGET_USES_INTERACTION_BOOST := true
 # Properties
