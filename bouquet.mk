@@ -451,8 +451,7 @@ PRODUCT_BOOT_JARS += \
 
 # USB
 PRODUCT_PACKAGES += \
-    android.hardware.usb@1.3-service-qti \
-    android.hardware.usb.gadget@1.2-service-qti
+    android.hardware.usb@1.3-service.basic
 
 # Updater
 AB_OTA_UPDATER := false
@@ -460,8 +459,7 @@ AB_OTA_UPDATER := false
 # USB
 PRODUCT_PACKAGES += \
     init.qcom.usb.rc \
-    init.qcom.usb.sh \
-    usb_compositions.conf
+    init.qcom.usb.sh
 
 PRODUCT_SOONG_NAMESPACES += \
     vendor/qcom/opensource/usb/etc
