@@ -297,6 +297,8 @@ PRODUCT_PACKAGES += \
     IFAAService
 
 # Init
+$(call soong_config_set,libinit,vendor_init_lib,//$(COMMON_PATH):libinit_sdm660)
+
 PRODUCT_PACKAGES += \
     init.class_main.sh \
     init.qcom.early_boot.sh \
