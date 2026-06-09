@@ -64,9 +64,9 @@ AUDIO_FEATURE_ENABLED_EXT_AMPLIFIER := false
 # Camera
 TARGET_USES_QTI_CAMERA_DEVICE := true
 # Display
-TARGET_USES_HWC2 := true
-TARGET_USES_GRALLOC1 := true
-TARGET_USES_GRALLOC4 := true
+SOONG_CONFIG_NAMESPACES += qtidisplay
+SOONG_CONFIG_qtidisplay += target_kernel_version
+SOONG_CONFIG_qtidisplay_target_kernel_version := $(TARGET_KERNEL_VERSION)
 TARGET_USES_ION := true
 # FM
 ifeq ($(BOARD_HAVE_QCOM_FM),true)
