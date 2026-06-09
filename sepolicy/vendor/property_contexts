@@ -58,8 +58,5 @@ persist.vendor.wigig.npt.enable         u:object_r:vendor_default_prop:s0
 # Fastbootd
 ro.fastbootd.available                  u:object_r:exported_default_prop:s0
 
-# Fast Charge
-persist.vendor.fastchg_enabled          u:object_r:vendor_fastcharge_prop:s0
-
 # Dirac
 persist.audio.dirac.                    u:object_r:dirac_prop:s0
