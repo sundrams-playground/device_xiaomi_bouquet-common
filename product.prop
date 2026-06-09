@@ -1,5 +1,5 @@
 # eBPF
-ro.bpf.kver_override=5.4.300
+ro.bpf.kver_override=5.10.239
 
 # Charger
 ro.charger.disable_init_blank=true
