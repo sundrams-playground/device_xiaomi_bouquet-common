@@ -84,8 +84,7 @@ DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE := \
     $(COMMON_PATH)/configs/device_framework_matrix.xml \
     hardware/qcom-caf/common/vendor_framework_compatibility_matrix.xml \
     hardware/qcom-caf/common/vendor_framework_compatibility_matrix_legacy.xml \
-    hardware/xiaomi/vintf/xiaomi_framework_compatibility_matrix.xml \
-    vendor/lineage/config/device_framework_matrix.xml
+    hardware/xiaomi/vintf/xiaomi_framework_compatibility_matrix.xml
 # Partitions
 BOARD_FLASH_BLOCK_SIZE := 131072 # (BOARD_KERNEL_PAGESIZE * 64)
 BOARD_BOOTIMAGE_PARTITION_SIZE := 0x04000000
