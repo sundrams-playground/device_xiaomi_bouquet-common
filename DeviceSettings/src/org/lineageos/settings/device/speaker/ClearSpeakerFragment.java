@@ -26,14 +26,15 @@ import android.os.Looper;
 import android.util.Log;
 
 import androidx.preference.Preference;
-import androidx.preference.PreferenceFragment;
 import androidx.preference.SwitchPreferenceCompat;
+
+import com.android.settingslib.widget.SettingsBasePreferenceFragment;
 
 import org.lineageos.settings.device.R;
 
 import java.io.IOException;
 
-public class ClearSpeakerFragment extends PreferenceFragment implements
+public class ClearSpeakerFragment extends SettingsBasePreferenceFragment implements
         Preference.OnPreferenceChangeListener {
 
     private static final String TAG = "ClearSpeakerFragment";
@@ -46,7 +47,7 @@ public class ClearSpeakerFragment extends PreferenceFragment implements
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        addPreferencesFromResource(R.xml.clear_speaker_settings);
+        setPreferencesFromResource(R.xml.clear_speaker_settings, rootKey);
 
         mClearSpeakerPref = findPreference(PREF_CLEAR_SPEAKER);
         mClearSpeakerPref.setOnPreferenceChangeListener(this);

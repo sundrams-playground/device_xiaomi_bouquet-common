@@ -19,11 +19,11 @@ package org.lineageos.settings.device;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import androidx.preference.PreferenceFragment;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 
-import org.lineageos.settings.device.kcal.KCalSettingsActivity;
+import com.android.settingslib.widget.SettingsBasePreferenceFragment;
+
 import org.lineageos.settings.device.speaker.ClearSpeakerActivity;
 import org.lineageos.settings.device.preferences.SecureSettingListPreference;
 import org.lineageos.settings.device.preferences.SecureSettingSwitchPreference;
@@ -33,7 +33,7 @@ import org.lineageos.settings.device.preferences.CustomSeekBarPreference;
 
 import java.lang.Math.*;
 
-public class DeviceSettings extends PreferenceFragment implements
+public class DeviceSettings extends SettingsBasePreferenceFragment implements
         Preference.OnPreferenceChangeListener {
 
     public static final String CATEGORY_VIBRATOR = "vibration";
@@ -57,6 +57,9 @@ public class DeviceSettings extends PreferenceFragment implements
     private static final String PREF_PRESET = "dirac_preset_pref";
 
     public static final String PREF_KEY_FPS_INFO = "fps_info";
+    public static final String CATEGORY_FASTCHARGE = "usb_fastcharge";
+    public static final String PREF_USB_FASTCHARGE = "fastcharge";
+    public static final String USB_FASTCHARGE_PATH = "/sys/kernel/fast_charge/force_fast_charge";
 
     // value of vtg_min and vtg_max
     public static final int MIN_VIBRATION = 116;
@@ -68,14 +71,11 @@ public class DeviceSettings extends PreferenceFragment implements
 
     private static final String CATEGORY_DISPLAY = "display";
     private static final String PREF_DEVICE_DOZE = "device_doze";
-    private static final String PREF_DEVICE_KCAL = "device_kcal";
 
-    private static final String CATEGORY_HALL_WAKEUP = "hall_wakeup";
-    public static final String PREF_HALL_WAKEUP = "hall";
-    public static final String HALL_WAKEUP_PATH = "/sys/module/hall/parameters/hall_toggle";
-    public static final String HALL_WAKEUP_PROP = "persist.service.folio_daemon";
+    public static final String PREF_THERMAL = "thermal";
+    public static final String THERMAL_PATH = "/sys/devices/virtual/thermal/thermal_message/sconfig";
 
-    private static final String DEVICE_DOZE_PACKAGE_NAME = "com.advanced.settings.doze";
+    private static final String DEVICE_DOZE_PACKAGE_NAME = "org.lineageos.settings.doze";
 
     private static final String DEVICE_JASON_PACKAGE_NAME = "org.lineageos.settings.devicex";
     private static final String PREF_DEVICE_JASON = "device_jason";
@@ -86,6 +86,8 @@ public class DeviceSettings extends PreferenceFragment implements
     private SecureSettingSwitchPreference mEnableDirac;
     private SecureSettingListPreference mHeadsetType;
     private SecureSettingListPreference mPreset;
+    private SecureSettingSwitchPreference mFastcharge;
+    private SecureSettingListPreference mTHERMAL;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -135,7 +137,6 @@ public class DeviceSettings extends PreferenceFragment implements
         } else {
           gainCategory.removePreference(findPreference(PREF_MIC_GAIN));
         }
-
         // Display Category
         PreferenceCategory displayCategory = (PreferenceCategory) findPreference(CATEGORY_DISPLAY);
         // Doze
@@ -149,13 +150,12 @@ public class DeviceSettings extends PreferenceFragment implements
         //FPS Info
         SecureSettingSwitchPreference fpsInfo = (SecureSettingSwitchPreference) findPreference(PREF_KEY_FPS_INFO);
         fpsInfo.setOnPreferenceChangeListener(this);
-        // KCAL
-        Preference kcal = findPreference(PREF_DEVICE_KCAL);
-        kcal.setOnPreferenceClickListener(preference -> {
-            Intent intent = new Intent(getActivity().getApplicationContext(), KCalSettingsActivity.class);
-            startActivity(intent);
-            return true;
-        });
+
+        // Thermal Switch
+        mTHERMAL = (SecureSettingListPreference) findPreference(PREF_THERMAL);
+        mTHERMAL.setValue(FileUtils.getValue(THERMAL_PATH));
+        mTHERMAL.setSummary(mTHERMAL.getEntry());
+        mTHERMAL.setOnPreferenceChangeListener(this);
 
         // Dirac
         boolean enhancerEnabled;
@@ -183,12 +183,13 @@ public class DeviceSettings extends PreferenceFragment implements
         mPreset = (SecureSettingListPreference) findPreference(PREF_PRESET);
         mPreset.setOnPreferenceChangeListener(this);
 
-        if (FileUtils.fileWritable(HALL_WAKEUP_PATH)) {
-            SecureSettingSwitchPreference hall = (SecureSettingSwitchPreference) findPreference(PREF_HALL_WAKEUP);
-            hall.setChecked(FileUtils.getValue(HALL_WAKEUP_PATH).equals("Y"));
-            hall.setOnPreferenceChangeListener(this);
+        if (FileUtils.fileWritable(USB_FASTCHARGE_PATH)) {
+            mFastcharge = (SecureSettingSwitchPreference) findPreference(PREF_USB_FASTCHARGE);
+            mFastcharge.setEnabled(Fastcharge.isSupported());
+            mFastcharge.setChecked(Fastcharge.isCurrentlyEnabled(this.getContext()));
+            mFastcharge.setOnPreferenceChangeListener(new Fastcharge(getContext()));
         } else {
-            getPreferenceScreen().removePreference(findPreference(CATEGORY_HALL_WAKEUP));
+            getPreferenceScreen().removePreference(findPreference(CATEGORY_FASTCHARGE));
         }
     }
 
@@ -244,11 +245,6 @@ public class DeviceSettings extends PreferenceFragment implements
                 }
                 break;
 
-            case PREF_HALL_WAKEUP:
-                FileUtils.setValue(HALL_WAKEUP_PATH, (boolean) value ? "Y" : "N");
-                FileUtils.setProp(HALL_WAKEUP_PROP, (boolean) value);
-                break;
-
             case PREF_KEY_FPS_INFO:
                 boolean enabled = (boolean) value;
                 Intent fpsinfo = new Intent(this.getContext(), FPSInfoService.class);
@@ -259,6 +255,12 @@ public class DeviceSettings extends PreferenceFragment implements
                 }
                 break;
 
+            case PREF_THERMAL:
+                mTHERMAL.setValue((String) value);
+                mTHERMAL.setSummary(mTHERMAL.getEntry());
+                FileUtils.setValue(THERMAL_PATH, (String) value);
+                break;
+                
             default:
                 break;
         }

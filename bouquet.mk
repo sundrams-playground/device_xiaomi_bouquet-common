@@ -174,7 +174,7 @@ PRODUCT_PACKAGES += \
 
 # DeviceDoze
 PRODUCT_PACKAGES += \
-    DeviceDoze
+    XiaomiDoze
 
 # Display
 PRODUCT_PACKAGES += \
@@ -212,10 +212,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     android.hardware.drm@1.3.vendor \
     libcrypto_shim.vendor
-
-# Folio
-PRODUCT_PACKAGES += \
-    folio_daemon
 
 # Fingerprint
 PRODUCT_PACKAGES += \
